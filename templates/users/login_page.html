@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+
+<h3>
+    Вход
+</h3>
+<form action="" method="POST"></form>
+    {% csrf_token %}
+    {% if form.errors%}
+        <p>{{form.errors}}</p>
+    {% endif %}
+    <label for="">Enter login</label>
+    {{from.username}}
+    <label for="">Enter password</label>
+    {{from.password}}
+    <button type="submit" class="btn btn-primary">Вход</button>
+{% block content %}
