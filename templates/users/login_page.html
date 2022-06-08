@@ -1,17 +1,23 @@
 {% extends '_base.html' %}
+{% load widget_tweaks}
+{% block content %}
 
 
 <h3>
     Вход
 </h3>
-<form action="" method="POST"></form>
+<form action="" method="POST">
     {% csrf_token %}
     {% if form.errors%}
         <p>{{form.errors}}</p>
     {% endif %}
     <label for="">Enter login</label>
-    {{from.username}}
-    <label for="">Enter password</label>
-    {{from.password}}
+    {{render_field from.username class="form controle form_field" placeholder="Enter the username"}}
+
+    <label for="">Enter password</label>  
+
+    {{render_field from.username class="form controle form_field" placeholder="Enter the username"}}
     <button type="submit" class="btn btn-primary">Вход</button>
-{% block content %}
+</form>
+
+{% endblock content %}

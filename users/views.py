@@ -5,7 +5,7 @@ from django.contrib.admin.forms import AuthenticationForm
 
 
 def login_page(request):
-	if reqest.method == 'POST'
+	if request.method == 'POST':
 		form = AuthenticationForm(reqest, data=reqest.POST)
 		if  form.is_valid():
 			print("works")
@@ -20,8 +20,10 @@ def login_page(request):
 	context = {
 		'form':form
 	}
-	return render (request, 'users/login_page.html', context )
+	return render(request, 'users/login_page.html', context )
 
 
 
-
+def logout_page(request):
+	logout(request)
+	return redirect('blog_list')
