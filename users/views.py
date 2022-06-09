@@ -1,22 +1,22 @@
 from multiprocessing import context                        
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.admin.forms import AuthenticationForm
-
+from django.contrib.auth.forms import AuthenticationForm 
+from .forms import RegistrationForm
 
 def login_page(request):
+	form = AuthenticationForm()
 	if request.method == 'POST':
-		form = AuthenticationForm(reqest, data=reqest.POST)
+		form = AuthenticationForm(request, data=request.POST)
 		if  form.is_valid():
 			print("works")
-			usermane  = form.clened_data.get('usremane')
-			password  = form.clened_data.get('password')
-			user = authentical(username = username, password=password)
+			username  = form.cleaned_data.get('username')
+			password  = form.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user) 
 				return redirect('blog_list')
 	
-	form = AuthenticationForm
 	context = {
 		'form':form
 	}
@@ -27,3 +27,14 @@ def login_page(request):
 def logout_page(request):
 	logout(request)
 	return redirect('blog_list')
+
+
+def register_page(request):
+	form =  RegistrationForm()
+	if request.method == "POST" :
+		form = RegistrationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('blog_list')
+	context = {'form' : form }
+	return render(request, 'users/register_page.html', context) 

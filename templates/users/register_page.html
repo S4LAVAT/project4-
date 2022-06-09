@@ -1,5 +1,5 @@
 {% extends '_base.html' %}
-{% load widget_tweaks}
+{% load widget_tweaks%}
 {% block content %}
 
 
@@ -9,14 +9,16 @@
 <form action="" method="POST">
     {% csrf_token %}
     {% if form.errors%}
-        <p>неправильный логин или пароль</p>
+        <p>{{form.errors}}</p>
     {% endif %}
     <label for="">Enter login</label>
     {{form.username}}
-
+    <label for="">Enter email</label>
+    {{form.email}}
     <label for="">Enter password</label>  
-
-    {{form.password }}
+    {{form.password1}}
+    <label for="">Enter password2</label>  
+    {{form.password2}}
     <button type="submit" class="btn btn-primary">Вход</button>
 </form>
 

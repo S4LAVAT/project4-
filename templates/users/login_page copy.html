@@ -9,14 +9,14 @@
 <form action="" method="POST">
     {% csrf_token %}
     {% if form.errors%}
-        <p>неправильный логин или пароль</p>
+        <p>{{form.errors}}</p>
     {% endif %}
     <label for="">Enter login</label>
-    {{form.username}}
+    {{render_field from.username class="form controle form_field" placeholder="Enter the username"}}
 
     <label for="">Enter password</label>  
 
-    {{form.password }}
+    {{render_field from.username class="form controle form_field" placeholder="Enter the username"}}
     <button type="submit" class="btn btn-primary">Вход</button>
 </form>
 

@@ -28,10 +28,14 @@
 	          </ul>
 	        </li>
 	      </ul>
-	      <form class="d-flex">
-	        <input class="form-control me-2" type="search" placeholder="найти комикс" aria-label="Search">
-	        <button class="btn btn-outline-success" type="submit">найти</button>
-	      </form>
+	      <div class="d-flex">
+			 {% if user.is_authenticated %}
+				 <span class="text-white me-1">{{user.username}}</span>
+				 <a href="{% url 'logout_page' %}" class="link-light" > выход  </a>		 
+				{% else %}	
+				<a href="{% url 'login_page' %}" class="link-light" > вход  </a>		 
+			 {% endif %}
+	      </div>
 	    </div>
 	  </div>
 	</nav>
