@@ -5,7 +5,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm
 
 def login_page(request):
-	form = AuthenticationForm()
 	if request.method == 'POST':
 		form = AuthenticationForm(request, data=request.POST)
 		if  form.is_valid():
@@ -17,6 +16,7 @@ def login_page(request):
 				login(request, user) 
 				return redirect('blog_list')
 	
+	form = AuthenticationForm()
 	context = {
 		'form':form
 	}
