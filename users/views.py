@@ -22,8 +22,8 @@ def login_page(request):
 		'form':form
 	}
 	return render(request, 'users/login_page.html', context )
-
-
+                      
+																																															
 
 def logout_page(request):
 	logout(request)
