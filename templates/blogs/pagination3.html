@@ -1,0 +1,46 @@
+<div class="container">
+    <h1 class="text-center">Список заданий</h1>
+    <hr>
+
+    <ul class="list-group list-group-flush">
+      {% for t in todos %}
+        <li class="list-group-item">{{ t }}</li>
+      {% endfor %}
+    </ul>
+
+    <br><hr>
+
+      <!-- пагинация -->
+          <div>
+              {% if todos.has_previous %}
+                <a href="?page={{ todos.previous_page_number }}">« назад</a>
+              
+                {% if todos.number > 3 %}
+                  <a href="?page=1">1</a>
+                  {% if todos.number > 4 %}
+                    <span>...</span>
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+              
+              {% for num in todos.paginator.page_range %}
+                {% if todos.number == num %}
+                  <a href="?page={{ num }}">{{ num }}</a>
+                {% elif num > todos.number|add:'-3' and num < todos.number|add:'3' %}
+                  <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+              {% endfor %}
+              
+              {% if todos.has_next %}
+                {% if todos.number < todos.paginator.num_pages|add:'-3' %}
+                  <span>...</span>
+                  <a href="?page={{ todos.paginator.num_pages }}">{{ todos.paginator.num_pages }}</a>
+                {% elif todos.number < todos.paginator.num_pages|add:'-2' %}
+                  <a href="?page={{ todos.paginator.num_pages }}">{{ todos.paginator.num_pages }}</a>
+                {% endif %}
+              
+                <a href="?page={{ todos.next_page_number }}">вперед »</a>
+              {% endif %}
+          </div>
+          <!-- конец пагинации -->
+</div>

@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
 
+
 def login_page(request):
 	if request.method == 'POST':
 		form = AuthenticationForm(request, data=request.POST)
