@@ -1,23 +1,33 @@
-{% extends '_base.html' %}
-{% load widget_tweaks}
+{% extends "_base.html" %}
+{% load static %}
+
+
 {% block content %}
-
-
-<h3>
-    Вход
-</h3>
-<form action="" method="POST">
-    {% csrf_token %}
-    {% if form.errors%}
-        <p>неправильный логин или пароль</p>
-    {% endif %}
-    <label for="">Enter login</label>
-    {{form.username}}
-
-    <label for="">Enter password</label>  
-
-    {{form.password }}
-    <button type="submit" class="btn btn-primary">Вход</button>
-</form>
+<div class="container">
+	<div class="row mt-2">
+		<div class="col-4 offset-md-4 mt-4">
+			<legend>Вход</legend>
+			<form class="mb-3" action="" method="POST">
+				{% csrf_token %}
+				{% if form.errors %}
+					<p>{{form.errors}}</p>
+				{% endif %}
+				<label for="disabledTextInput" class="form-label">Введите логин:</label>
+				{{form.username}}
+				<label for="disabledSelect" class="form-label">Введите пароль:</label>
+				{{form.password}}
+				<div class="mb-3">
+					<div class="form-check">
+					  	<input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
+					  	<label class="form-check-label" for="disabledFieldsetCheck">
+					    	Cant check this
+					 	 </label>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
 
 {% endblock content %}

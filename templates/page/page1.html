@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+      <h1 class="text-center">Список заданий</h1>
+      <hr>
+
+      <ul class="list-group list-group-flush">
+        {% for b in blogs %}
+          <li class="list-group-item">{{b }}</li>
+        {% endfor %}
+      </ul>
+
+      <br><hr>
+
+	    <!-- пагинация -->
+			<div>
+			  <span>
+			    {% if blogs.has_previous %}
+			      <a href="?page={{ blogs.previous_page_number }}">пред.</a>
+			    {% endif %}
+			    <span>
+			      стр {{ blogs.number }} из {{ blogs.paginator.num_pages }}.
+			    </span>
+			    {% if blogs.has_next %}
+			      <a href="?page={{ blogs.next_page_number }}">след.</a>
+			    {% endif %}
+			  </span>
+			</div>
+			<!-- конец пагинации -->
+ </div>
+
+ {% endblock content %}

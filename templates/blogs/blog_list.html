@@ -1,22 +1,36 @@
-{% extends '_base.html' %}
-{% block content %}
-    <h3>список блогов</h3>
-    <form action="" method="GET">
-        <label for="">Название</label>
-        <input class='form.control' type="text" name='q'>
-        <label for="">Автор</label>
-        <input class='form.control' type="text" name='q_user'>
-        <button class="btn btn primary" type='sumbit'>
-            Поиск 
-        </button>
-    </form> 
-    <div class= "container">
-        {%for b in blogs%}
-        <h3>{{b.title}}</h3>
-        <p>{{b.text}}</p>
-        <hr>
-        {% endfor %}
-    </div>
 
-    
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row mt-2">
+	<div class="container">
+		<form action="", method="GET">
+			<label>Название</label>
+			<input type="text" name="q" class="form-control" placeholder="Поиск блогов" value="{{q}}">
+			<input type="text" name="q_user" class="form-control" placeholder="Пользователь" value="{{q_user}}">
+			<button class="bnt btn-primary" type="sumbit">Поиск</button>
+		</form>
+		{% for b in blogs %}
+		    <h3>{{b.title}}</h3>
+	    	<p>{{b.text}}</p>
+	    	<hr>
+		{% endfor %}
+	</div>
+</div>
+<div>
+	<span>
+	 	{% if blogs.has_previous %}
+	  		<a href="?page={{ blogs.previous_page_number }}&q{{q}}&q_user{{q_user}}">пред.</a>
+	 	{% endif %}
+		<span>
+	  		стр {{ blogs.number }} из {{ blogs.paginator.num_pages }}.
+	 	</span>
+	 	{% if blogs.has_next %}
+	   		<a href="?page={{ blogs.next_page_number }}&q{{q}}&q_user{{q_user}}">след.</a>
+	 	{% endif %}
+	</span>
+</div>
+
 {% endblock content %}
