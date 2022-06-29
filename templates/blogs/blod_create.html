@@ -1,0 +1,24 @@
+{% extends '_base.html' %}
+{% load widget_tweaks%}
+{% block content %}
+
+
+<h3>
+    создание блога
+</h3>
+<form action="" method="POST">
+    {% csrf_token %}
+    {% if form.errors%}
+        <p>{{form.errors}}</p>
+    {% endif %}
+    <label for="">Enter text</label>
+    {{form.text}}
+    <label for="">Enter title</label>
+    {{form.title}}
+
+    <label for="">Enter author</label>  
+    {{form.author}}
+    <button type="submit" class="btn btn-primary">Вход</button>
+</form>
+
+{% endblock content %}

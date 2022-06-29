@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from .models import Blog
+from django.forms import ModelForm
 
-class RegistrationForm(UserCreationForm):
+class BlogForm(ModelForm):
     class Meta:
-        model = User
-        fields = ('text' ,'title', 'created_at', 'author')
+        model = Blog
+        fields = ('text' ,'title', 'author')

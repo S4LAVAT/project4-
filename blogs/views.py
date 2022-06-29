@@ -4,9 +4,8 @@ from django.shortcuts import render
 from .models import Blog
 from django.db.models import Q
 from django.core.paginator import Paginator
-
-
-
+from .forms import BlogForm
+from .filters import BlogFilter
 def blog_list(request):
     ordering = request.GET.get('ordering', '-id')
     blogs = Blog.objects.all()
@@ -49,3 +48,22 @@ def list_blogs(request):
 		blogs = paginator.get_page(page_number)
 	# дальше стандартный код - контекст и return
 	pass
+
+def blog_create(request):
+    form = BlogForm()
+    if request.method == "POST":
+        form = BlogForm(reqest.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog_list')
+    context = {'form':form}
+    return render(request, 'templates/blogs/blog_create.html')
+
+
+def blog_filtered(request):
+    f  = BlogFilter(request.GET, queryset=Blog.objects.all())
+    context= {
+        'filter':f
+    }
+    return render(request, 'blogs/blog_list_filter.html', context)
+
