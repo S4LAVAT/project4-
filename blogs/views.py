@@ -11,6 +11,7 @@ def blog_list(request):
     blogs = Blog.objects.all()
     q = request.GET.get('q' , '')
     q_user = request.GET.get('q_user' , '')
+    paginator = Paginator(blogs, 3)
     if q or q_user:
         blogs = Blog.objects.filter((Q(title__icontains=q) | Q(text__icontains=q)) &  Q(author__username__icontains=q_user)).distinct()
     elif ordering == 'id':
@@ -67,3 +68,17 @@ def blog_filtered(request):
     }
     return render(request, 'blogs/blog_list_filter.html', context)
 
+
+def blog_list_ajax(request):
+    blogs = Blog.objects.all()
+    page_num = request.GET.get('page')
+    paginator = Paginator(blogs, 5)
+    blogs = paginator.get_page(page_num)
+    context={
+        'blogs':blogs
+    }
+    if page_num == 1 or page_num is None:
+        return render(request, 'blogs/blog_list_ajax.html', context)
+    else:
+        return render(request, 'blogs/_blog_list_ajax.html', context)
+    
