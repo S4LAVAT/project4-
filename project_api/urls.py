@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from gadgets.views import ProductList
+from gadgets.views import ProductList, ProductDetail, ProductDestroy, ProductCreate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('products', ProductList.as_view(), name='products')
+    path('products', ProductList.as_view(), name='products'),
+    path('products/<int:product_id>/delete', ProductDestroy.as_view(), name='products_destroy'),
+    path('products/<int:product_id>', ProductDetail.as_view(), name='products_detail'),
+    path('products/create', ProductCreate.as_view(), name='products_create')
+
 
 
 ]
