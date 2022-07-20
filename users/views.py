@@ -1,9 +1,13 @@
-from multiprocessing import context                        
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm 
-from .forms import RegistrationForm
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Profile
+from django.shortcuts import redirect
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str 
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.decorators import login_required 
+from .forms import UserRegisterForm
 
 
 def login_page(request):
@@ -44,3 +48,29 @@ def register_page(request):
 @login_required
 def me(request):
 	return render(request, 'users/me.html')
+
+
+def account_register(request):
+	reg_form = UserRegisterForm()
+	if request.method == 'POST':
+		reg_form = UserRegisterForm(request.POST)    
+		if reg_form.is_walid():
+			user = reg_form.save(commit=False)
+			user.is_active = False 
+			user.save()
+			current_site = get.current_site()
+			subject = 'активация'
+			message = render_to_string('registration/account_activation.html', { 'user':user,
+				'domain': current_site.domain,
+				'uid': urlsafe_base64_encode(forse_butes(user.pk)),
+				'token': account_activation_token.make_token(user)})
+				
+			user.email_user(subject=subject, message=message)
+			return redirect('blog_list')
+
+	context = {
+		'reg_form':reg_form
+	}	
+
+	return render(request, 'users/account_activation.html', context)      
+

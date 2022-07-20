@@ -82,3 +82,4 @@ def blog_list_ajax(request):
     else:
         return render(request, 'blogs/_blog_list_ajax.html', context)
     
+    

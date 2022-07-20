@@ -128,3 +128,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "login_page"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
