@@ -1,10 +1,5 @@
-{% extends '_base.html' %}
-{% load widget_tweaks}
-{% block content %}
-
 {% autoescape off %}
     <h5>ПРИВЕТ{{user.username}}</h5>
     please clik on this link to connfirm your email <br>
-    http://{{domain}}{%url 'accout_activation' uid64=uid token=token%}
+    http://{{domain}}{% url 'account_activation' uidb64=uid token=token %}
 {% endautoescape%}
-{% endblock content %}

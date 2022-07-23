@@ -8,7 +8,8 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.decorators import login_required 
 from .forms import UserRegisterForm
-
+from django.contrib.auth import login 
+from django.contrib.auth.models import User 
 
 def login_page(request):
 	if request.method == 'POST':
@@ -36,41 +37,51 @@ def logout_page(request):
 
 
 def register_page(request):
-	form =  RegistrationForm()
-	if request.method == "POST" :
-		form = RegistrationForm(request.POST)
-		if form.is_valid():
-			form.save()
-			return redirect('blog_list')
-	context = {'form' : form }
-	return render(request, 'users/register_page.html', context) 
-
-@login_required
-def me(request):
-	return render(request, 'users/me.html')
-
-
-def account_register(request):
-	reg_form = UserRegisterForm()
+	form = UserRegisterForm()
 	if request.method == 'POST':
-		reg_form = UserRegisterForm(request.POST)    
-		if reg_form.is_walid():
-			user = reg_form.save(commit=False)
+		form = UserRegisterForm(request.POST)    
+		if form.is_valid():
+			user = form.save(commit=False)
 			user.is_active = False 
 			user.save()
-			current_site = get.current_site()
+			current_site = get_current_site(request)
 			subject = 'активация'
-			message = render_to_string('registration/account_activation.html', { 'user':user,
+			message = render_to_string('users/account_activation.html', { 'user':user,
 				'domain': current_site.domain,
-				'uid': urlsafe_base64_encode(forse_butes(user.pk)),
+				'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 				'token': account_activation_token.make_token(user)})
 				
 			user.email_user(subject=subject, message=message)
 			return redirect('blog_list')
 
 	context = {
-		'reg_form':reg_form
+		'form':form
 	}	
 
-	return render(request, 'users/account_activation.html', context)      
+	return render(request, 'users/register_page.html', context)      
+
+
+@login_required
+def me(request):
+	return render(request, 'users/me.html')
+
+
+
+def account_activation(request, uidb64, token):
+	try:
+		uid = force_str(urlsafe_base64_decode(uidb64))
+		user = User.objects.get(pk=uid)
+	except(TypeError, ValueError, OverflowError, User.DoeseNotExist):
+		user = None 
+	if user is not None and account_activation_token.check_token(user, token):
+		user.is_active = True
+		user.save()
+		login(request, user)
+		return redirect('blog_list')
+	else:
+		return render (request, 'users/activation_faild.html')
+
+
+
+
 
